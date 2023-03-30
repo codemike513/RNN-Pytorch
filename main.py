@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from utils import ALL_LETTERS, N_LETTERS
 from utils import load_data, letter_to_tensor, line_to_tensor, random_training_example
@@ -9,7 +9,7 @@ from utils import load_data, letter_to_tensor, line_to_tensor, random_training_e
 class RNN(nn.Module):
 
   def __init__(self, input_size, hidden_size, output_size):
-    super(RNN, self)._init__()
+    super(RNN, self).__init__()
 
     self.hidden_size = hidden_size
     self.i2h = nn.Linear(input_size + hidden_size, hidden_size)
@@ -20,7 +20,7 @@ class RNN(nn.Module):
     combined = torch.cat((input_tensor, hidden_tensor), 1)
 
     hidden = self.i2h(combined)
-    output = self.i20(combined)
+    output = self.i2o(combined)
     output = self.softmax(output)
     return output, hidden
 
@@ -31,3 +31,13 @@ class RNN(nn.Module):
 category_lines, all_categories = load_data()
 n_categories = len(all_categories)
 print(n_categories)
+
+n_hidden = 128
+rnn = RNN(N_LETTERS, n_hidden, n_categories)
+
+input_tensor = letter_to_tensor('A')
+hidden_tensor = rnn.init_hidden()
+
+output, next_hidden = rnn(input_tensor, hidden_tensor)
+print(output.size())
+print(next_hidden.size())
