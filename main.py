@@ -58,3 +58,7 @@ def category_from_output(output):
 
 
 print(category_from_output(output))
+
+criterion = nn.NLLLoss()
+learning_rate = 0.005
+optimizer = torch.optim.SGD(rnn.paramters(), lr=learning_rate)
